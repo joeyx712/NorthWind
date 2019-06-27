@@ -19,9 +19,22 @@ namespace NorthWind.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: api/Products
-        public IQueryable<Products> GetProducts()
+        public async Task<IHttpActionResult> GetProducts()
         {
-            return db.Products;
+            var products = await db.Products.Include(p => p.ProductName)
+                .Select(p => new ProductModel()
+                {
+                    ProductId = p.ProductID,
+                    ProductName = p.ProductName,
+                    Discontinued = p.Discontinued,
+                    QuantityPerUnit = p.QuantityPerUnit
+                }).ToListAsync();
+            if (products == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(products);
         }
 
         // GET: api/Products/5
