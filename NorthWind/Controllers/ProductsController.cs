@@ -19,6 +19,7 @@ namespace NorthWind.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: api/Products
+        [ResponseType(typeof(Products))]
         public async Task<IHttpActionResult> GetProducts()
         {
             var products = await db.Products.Include(p => p.ProductName)
