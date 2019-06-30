@@ -24,8 +24,34 @@ namespace NorthWind.Tests.Controllers
             var result_test = result as OkNegotiatedContentResult<List<ProductModel>>;
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(result_test.Content.Count,78);
+            Assert.AreEqual(result_test.Content.Count, 77);
+        }
 
+        [TestMethod]
+        public async Task PostNewProduct_ShouldReturnNewProducts()
+        {
+            //Arragnge
+            var controller = new ProductsController();
+            controller.Request = new HttpRequestMessage();
+            controller.Configuration = new System.Web.Http.HttpConfiguration();
+            var NewProduct = new Products()
+            {
+                ProductName = "Test Product",
+                SupplierID = 1,
+                CategoryID = 1,
+                QuantityPerUnit = "Test Quantity",
+                UnitPrice = 100,
+                UnitsInStock = 100,
+                UnitsOnOrder = 50,
+                ReorderLevel = 10,
+                Discontinued = false
+            };
+            //Act
+            var result = await controller.PostProducts(NewProduct);
+            var result_test = result as CreatedAtRouteNegotiatedContentResult<Products>;
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(result_test.Content.ProductName, "Test Product");
         }
     }
 }

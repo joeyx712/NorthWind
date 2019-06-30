@@ -105,7 +105,6 @@ namespace NorthWind.Controllers
 
             db.Products.Add(products);
             await db.SaveChangesAsync();
-
             return CreatedAtRoute("DefaultApi", new { id = products.ProductID }, products);
         }
 
